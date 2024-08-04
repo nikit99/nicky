@@ -11,7 +11,7 @@ const SignIn = ({ onLogin }) => {
 
   return (
     <div className="signin-container">
-      <h2>Sign In</h2>
+      <h2>Lead Management System</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email</label>

@@ -1,10 +1,26 @@
-import React from 'react';
+// src/components/Home.js
 
-const Home = ({ leadCount }) => {
+import React from 'react';
+import Card from './Card';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faUsers } from '@fortawesome/free-solid-svg-icons'; // Import icons
+
+const Home = ({ leadCount, userCount }) => {
   return (
     <div>
-      <h1>Home</h1>
-      <p>Number of Leads: {leadCount}</p>
+    
+      <div className="cards-container">
+        <Card
+          icon={<FontAwesomeIcon icon={faUser} />}
+          title="Total Users"
+          content={userCount}
+        />
+        <Card
+          icon={<FontAwesomeIcon icon={faUsers} />}
+          title="Lead Count"
+          content={leadCount}
+        />
+      </div>
     </div>
   );
 };
