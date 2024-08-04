@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
 import Leads from './components/Leads';
+import CreateLead from './components/CreateLead';
 import './styles.css'; // Import the CSS file
 
 const App = () => {
@@ -21,6 +22,12 @@ const App = () => {
     setIsSignedIn(true); // Automatically sign in after sign up
   };
 
+
+  const handleCreateLead = (newLead) => {
+    setLeads((prevLeads) => [...prevLeads, newLead]);
+  };
+
+
   return (
     <Router>
       {isSignedIn && <Navbar />}
@@ -34,7 +41,11 @@ const App = () => {
             path="/leads" 
             element={isSignedIn ? <Leads leads={leads} /> : <Navigate to="/" />} 
           />
-        </Routes>
+            <Route 
+            path="/create-lead" 
+            element={isSignedIn ? <CreateLead onCreateLead={handleCreateLead} /> : <Navigate to="/" />} 
+          />
+        </Routes> 
       </div>
     </Router>
   );
