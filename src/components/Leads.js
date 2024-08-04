@@ -24,7 +24,7 @@ const Leads = ({ leads }) => {
           {leads.map((lead) => (
             <tr key={lead.userId}>
               <td>
-                <Link to={`/lead/${lead.userId}`}>{lead.userId}</Link> {/* Make User ID clickable */}
+                <Link to={`/lead/${lead.userId}`}>{lead.userId}</Link>
               </td>
               <td>{lead.firstName}</td>
               <td>{lead.lastName}</td>
