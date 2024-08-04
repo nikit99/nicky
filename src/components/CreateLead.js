@@ -23,7 +23,6 @@ const CreateLead = ({ onCreateLead }) => {
 
   return (
     <div>
-      <h1>Create Lead</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>

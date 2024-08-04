@@ -12,6 +12,7 @@ const SignUp = ({ onSignUp }) => {
   };
 
   return (
+    <div className="signup-container">
     <form onSubmit={handleSubmit}>
       <div>
         <label>User ID:</label>
@@ -23,6 +24,7 @@ const SignUp = ({ onSignUp }) => {
       </div>
       <button type="submit">Sign Up</button>
     </form>
+    </div>
   );
 };
 

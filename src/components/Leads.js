@@ -1,12 +1,25 @@
+// src/components/Leads.js
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 const Leads = ({ leads }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/lead-source');
+  };
+
   return (
     <div>
-      <h1>Leads</h1>
-      <Link to="/create-lead">
-        <button>Create Lead</button>
-      </Link>
+      <div className="button-container">
+        <Link to="/create-lead">
+          <button className="create-lead">Create Lead</button>
+        </Link>
+        <button className="create-lead" onClick={handleNavigate}>
+          Lead Source
+        </button>
+      </div>
       <table>
         <thead>
           <tr>
