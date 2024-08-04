@@ -7,7 +7,8 @@ import Leads from './components/Leads';
 import CreateLead from './components/CreateLead';
 import Admin from './components/Admin';
 import CreateUser from './components/CreateUser';
-import './styles.css'; // Import the CSS file
+import LeadDetails from './components/LeadDetails';
+import './styles.css';
 
 const adminCredentials = {
   email: 'nikit@gmail.com',
@@ -46,6 +47,14 @@ const App = () => {
     }
   };
 
+  const handleUpdateLead = (updatedLead) => {
+    const updatedLeads = leads.map(lead =>
+      lead.userId === updatedLead.userId ? updatedLead : lead
+    );
+    setLeads(updatedLeads);
+    localStorage.setItem('leads', JSON.stringify(updatedLeads));
+  };
+
   return (
     <Router>
       {isSignedIn && <Navbar isAdmin={isAdmin} />}
@@ -53,9 +62,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={isSignedIn ? <Home leadCount={leads.filter(lead => lead.createdBy === currentUser.email).length} /> : <SignIn onLogin={handleLogin} />} />
           <Route path="/leads" element={isSignedIn ? <Leads leads={leads.filter(lead => lead.createdBy === currentUser.email)} /> : <Navigate to="/" />} />
-          <Route path="/create-lead" element={isSignedIn ? <CreateLead onCreateLead={newLead => setLeads([...leads, newLead])} /> : <Navigate to="/" />} />
+          <Route path="/create-lead" element={isSignedIn ? <CreateLead onCreateLead={newLead => setLeads([...leads, newLead])} onUpdateLead={handleUpdateLead} leads={leads} /> : <Navigate to="/" />} />
           <Route path="/admin" element={isSignedIn && isAdmin ? <Admin users={users} onAddUser={newUser => setUsers([...users, newUser])} /> : <Navigate to="/" />} />
           <Route path="/create-user" element={isSignedIn && isAdmin ? <CreateUser onAddUser={newUser => setUsers([...users, newUser])} /> : <Navigate to="/" />} />
+          <Route path="/lead/:userId" element={<LeadDetails leads={leads} />} />
         </Routes>
       </div>
     </Router>

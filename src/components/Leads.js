@@ -23,7 +23,9 @@ const Leads = ({ leads }) => {
         <tbody>
           {leads.map((lead) => (
             <tr key={lead.userId}>
-              <td>{lead.userId}</td>
+              <td>
+                <Link to={`/lead/${lead.userId}`}>{lead.userId}</Link> {/* Make User ID clickable */}
+              </td>
               <td>{lead.firstName}</td>
               <td>{lead.lastName}</td>
               <td>{lead.email}</td>

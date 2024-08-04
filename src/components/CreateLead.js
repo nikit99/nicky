@@ -1,31 +1,56 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const CreateLead = ({ onCreateLead }) => {
+const CreateLead = ({ onCreateLead, onUpdateLead, leads }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [userId, setUserId] = useState('');
   const navigate = useNavigate();
-  const currentUserEmail = localStorage.getItem('currentUserEmail');
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const editId = queryParams.get('edit');
+
+    if (editId) {
+      const leadToEdit = leads.find((lead) => lead.userId === editId);
+      if (leadToEdit) {
+        setUserId(leadToEdit.userId);
+        setFirstName(leadToEdit.firstName);
+        setLastName(leadToEdit.lastName);
+        setEmail(leadToEdit.email);
+        setPhone(leadToEdit.phone);
+      }
+    }
+  }, [location.search, leads]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newLead = {
-      userId: Date.now().toString(), // Generating a simple ID
+      userId: userId || Date.now().toString(),
       firstName,
       lastName,
       email,
       phone,
-      createdBy: currentUserEmail
+      createdBy: localStorage.getItem('currentUserEmail')
     };
-    onCreateLead(newLead);
-    navigate('/leads'); // Redirect back to leads page after creation
+
+    if (userId) {
+      // Update existing lead
+      onUpdateLead(newLead);
+    } else {
+      // Create new lead
+      onCreateLead(newLead);
+    }
+
+    navigate('/leads');
   };
 
   return (
     <div>
-      <h1>Create Lead</h1>
+      <h1>{userId ? 'Edit Lead' : 'Create Lead'}</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>
@@ -71,7 +96,7 @@ const CreateLead = ({ onCreateLead }) => {
             />
           </label>
         </div>
-        <button type="submit">Create Lead</button>
+        <button type="submit">{userId ? 'Update Lead' : 'Create Lead'}</button>
       </form>
     </div>
   );
