@@ -2,18 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const CreateLead = ({ onCreateLead, onUpdateLead, leads }) => {
-  const [leadOwner, setLeadOwner] = useState('');
-  const [leadName, setLeadName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [userId, setUserId] = useState('');
+  const [leadName, setLeadName] = useState('');
   const [industry, setIndustry] = useState('');
   const [leadSource, setLeadSource] = useState('');
   const [leadStatus, setLeadStatus] = useState('');
   const [createdTime, setCreatedTime] = useState('');
   const [productsInterested, setProductsInterested] = useState('');
-  const [userId, setUserId] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,12 +24,11 @@ const CreateLead = ({ onCreateLead, onUpdateLead, leads }) => {
       const leadToEdit = leads.find((lead) => lead.userId === editId);
       if (leadToEdit) {
         setUserId(leadToEdit.userId);
-        setLeadOwner(leadToEdit.leadOwner);
-        setLeadName(leadToEdit.leadName);
         setFirstName(leadToEdit.firstName);
         setLastName(leadToEdit.lastName);
         setEmail(leadToEdit.email);
         setPhone(leadToEdit.phone);
+        setLeadName(leadToEdit.leadName);
         setIndustry(leadToEdit.industry);
         setLeadSource(leadToEdit.leadSource);
         setLeadStatus(leadToEdit.leadStatus);
@@ -44,12 +42,11 @@ const CreateLead = ({ onCreateLead, onUpdateLead, leads }) => {
     e.preventDefault();
     const newLead = {
       userId: userId || Date.now().toString(),
-      leadOwner,
-      leadName,
       firstName,
       lastName,
       email,
       phone,
+      leadName,
       industry,
       leadSource,
       leadStatus,
@@ -74,118 +71,156 @@ const CreateLead = ({ onCreateLead, onUpdateLead, leads }) => {
       <h1>{userId ? 'Edit Lead' : 'Create Lead'}</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Lead Owner:</label>
-          <input
-            type="text"
-            value={leadOwner}
-            onChange={(e) => setLeadOwner(e.target.value)}
-            required
-          />
+          <label>
+            Lead Owner:
+            <input
+              type="text"
+              value={localStorage.getItem('currentUserEmail')}
+              readOnly
+            />
+          </label>
         </div>
         <div>
-          <label>Lead Name:</label>
-          <input
-            type="text"
-            value={leadName}
-            onChange={(e) => setLeadName(e.target.value)}
-            required
-          />
+          <label>
+            Lead Name:
+            <input
+              type="text"
+              value={leadName}
+              onChange={(e) => setLeadName(e.target.value)}
+              required
+            />
+          </label>
         </div>
         <div>
-          <label>First Name:</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
+          <label>
+            First Name:
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </label>
         </div>
         <div>
-          <label>Last Name:</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
+          <label>
+            Last Name:
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </label>
         </div>
         <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <label>
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
         </div>
         <div>
-          <label>Phone:</label>
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
+          <label>
+            Phone:
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </label>
         </div>
         <div>
-          <label>Industry:</label>
-          <select
-            value={industry}
-            onChange={(e) => setIndustry(e.target.value)}
-            required
-          >
-            <option value="">Select Industry</option>
-            {/* Add other options here */}
-            <option value="Technology">Technology</option>
-            <option value="Healthcare">Healthcare</option>
-            {/* Add other industries as required */}
-          </select>
+          <label>
+            Industry:
+            <select
+              value={industry}
+              onChange={(e) => setIndustry(e.target.value)}
+              required
+            >
+              <option value="">Select Industry</option>
+              <option value="Technology">Technology</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Finance">Finance</option>
+              <option value="Education">Education</option>
+              <option value="Retail">Retail</option>
+              <option value="Manufacturing">Manufacturing</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Telecommunications">Telecommunications</option>
+              <option value="Transportation">Transportation</option>
+              <option value="Energy">Energy</option>
+            </select>
+          </label>
         </div>
         <div>
-          <label>Lead Source:</label>
-          <select
-            value={leadSource}
-            onChange={(e) => setLeadSource(e.target.value)}
-            required
-          >
-            <option value="">Select Lead Source</option>
-            {/* Add other options here */}
-            <option value="Website">Website</option>
-            <option value="Referral">Referral</option>
-            {/* Add other sources as required */}
-          </select>
+          <label>
+            Lead Source:
+            <select
+              value={leadSource}
+              onChange={(e) => setLeadSource(e.target.value)}
+              required
+            >
+              <option value="">Select Lead Source</option>
+              <option value="Website">Website</option>
+              <option value="Referral">Referral</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Email Campaign">Email Campaign</option>
+              <option value="Event">Event</option>
+              <option value="Trade Show">Trade Show</option>
+              <option value="Paid Advertising">Paid Advertising</option>
+              <option value="Organic Search">Organic Search</option>
+              <option value="Partner">Partner</option>
+              <option value="Cold Call">Cold Call</option>
+            </select>
+          </label>
         </div>
         <div>
-          <label>Lead Status:</label>
-          <select
-            value={leadStatus}
-            onChange={(e) => setLeadStatus(e.target.value)}
-            required
-          >
-            <option value="">Select Lead Status</option>
-            {/* Add other options here */}
-            <option value="New">New</option>
-            <option value="Contacted">Contacted</option>
-            {/* Add other statuses as required */}
-          </select>
+          <label>
+            Lead Status:
+            <select
+              value={leadStatus}
+              onChange={(e) => setLeadStatus(e.target.value)}
+              required
+            >
+              <option value="">Select Lead Status</option>
+              <option value="New">New</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Qualified">Qualified</option>
+              <option value="Nurturing">Nurturing</option>
+              <option value="Interested">Interested</option>
+              <option value="Follow-Up">Follow-Up</option>
+              <option value="Proposal Sent">Proposal Sent</option>
+              <option value="Negotiation">Negotiation</option>
+              <option value="Closed - Won">Closed - Won</option>
+              <option value="Closed - Lost">Closed - Lost</option>
+            </select>
+          </label>
         </div>
         <div>
-          <label>Created Time:</label>
-          <input
-            type="datetime-local"
-            value={createdTime}
-            onChange={(e) => setCreatedTime(e.target.value)}
-            required
-          />
+          <label>
+            Created Time:
+            <input
+              type="datetime-local"
+              value={createdTime}
+              onChange={(e) => setCreatedTime(e.target.value)}
+              required
+            />
+          </label>
         </div>
         <div>
-          <label>Products Interested:</label>
-          <input
-            type="text"
-            value={productsInterested}
-            onChange={(e) => setProductsInterested(e.target.value)}
-            required
-          />
+          <label>
+            Products Interested:
+            <input
+              type="text"
+              value={productsInterested}
+              onChange={(e) => setProductsInterested(e.target.value)}
+            />
+          </label>
         </div>
         <button type="submit">{userId ? 'Update Lead' : 'Create Lead'}</button>
       </form>

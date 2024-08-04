@@ -27,19 +27,31 @@ const App = () => {
     const storedLeads = JSON.parse(localStorage.getItem('leads')) || [];
     setUsers(storedUsers);
     setLeads(storedLeads);
+
+    const storedEmail = localStorage.getItem('currentUserEmail');
+    if (storedEmail) {
+      const user = storedUsers.find(user => user.email === storedEmail);
+      if (user) {
+        setIsSignedIn(true);
+        setCurrentUser(user);
+        setIsAdmin(user.role === 'admin');
+      }
+    }
   }, []);
 
   const handleLogin = (email, password) => {
     if (email === adminCredentials.email && password === adminCredentials.password) {
       setIsAdmin(true);
       setIsSignedIn(true);
-      setCurrentUser({ email });
+      const adminUser = { email, role: 'admin' };
+      setCurrentUser(adminUser);
       localStorage.setItem('currentUserEmail', email);
     } else {
       const user = users.find(user => user.email === email && user.password === password);
       if (user) {
         setIsSignedIn(true);
         setCurrentUser(user);
+        setIsAdmin(user.role === 'admin');
         localStorage.setItem('currentUserEmail', email);
       } else {
         alert("Invalid credentials");
@@ -55,9 +67,16 @@ const App = () => {
     localStorage.setItem('leads', JSON.stringify(updatedLeads));
   };
 
+  const handleLogout = () => {
+    setIsSignedIn(false);
+    setIsAdmin(false);
+    setCurrentUser(null);
+    localStorage.removeItem('currentUserEmail');
+  };
+
   return (
     <Router>
-      {isSignedIn && <Navbar isAdmin={isAdmin} />}
+      {isSignedIn && <Navbar isAdmin={isAdmin} onLogout={handleLogout} />}
       <div className="container">
         <Routes>
           <Route path="/" element={isSignedIn ? <Home leadCount={leads.filter(lead => lead.createdBy === currentUser.email).length} /> : <SignIn onLogin={handleLogin} />} />
@@ -66,6 +85,7 @@ const App = () => {
           <Route path="/admin" element={isSignedIn && isAdmin ? <Admin users={users} onAddUser={newUser => setUsers([...users, newUser])} /> : <Navigate to="/" />} />
           <Route path="/create-user" element={isSignedIn && isAdmin ? <CreateUser onAddUser={newUser => setUsers([...users, newUser])} /> : <Navigate to="/" />} />
           <Route path="/lead/:userId" element={<LeadDetails leads={leads} />} />
+          <Route path="*" element={<Navigate to={isSignedIn ? "/" : "/"} />} />
         </Routes>
       </div>
     </Router>

@@ -11,8 +11,17 @@ const CreateUser = ({ onAddUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const password = phone; // Password is the mobile number
-    const newUser = { firstName, lastName, email, phone, password, role };
+    const password = `${firstName}@${phone.substring(0, 3)}`; // Create password
+
+    const newUser = {
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+      role
+    };
+
     onAddUser(newUser);
     navigate('/admin'); // Redirect back to admin page after creation
   };
@@ -23,19 +32,39 @@ const CreateUser = ({ onAddUser }) => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>First Name:</label>
-          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Last Name:</label>
-          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Phone:</label>
-          <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>Role:</label>
