@@ -1,16 +1,17 @@
-// src/components/Leads.js
+// src/components/Admin.js
 import React, { useState } from 'react';
 
-const Leads = ({ leads, onAddLead }) => {
+const Admin = ({ users, onAddUser }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  const handleAddLead = (e) => {
+  const handleAddUser = (e) => {
     e.preventDefault();
-    const newLead = { firstName, lastName, email, phone, createdBy: localStorage.getItem('currentUserEmail') };
-    onAddLead(newLead);
+    const password = phone; // Password is the mobile number
+    const newUser = { firstName, lastName, email, phone, password };
+    onAddUser(newUser);
     setFirstName('');
     setLastName('');
     setEmail('');
@@ -19,8 +20,15 @@ const Leads = ({ leads, onAddLead }) => {
 
   return (
     <div>
-      <h1>Leads</h1>
-      <form onSubmit={handleAddLead}>
+      <h1>Admin</h1>
+      <h2>Users</h2>
+      <ul>
+        {users.map((user, index) => (
+          <li key={index}>{`${user.firstName} ${user.lastName} - ${user.email}`}</li>
+        ))}
+      </ul>
+      <h2>Add User</h2>
+      <form onSubmit={handleAddUser}>
         <div>
           <label>First Name:</label>
           <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
@@ -37,16 +45,10 @@ const Leads = ({ leads, onAddLead }) => {
           <label>Phone:</label>
           <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required />
         </div>
-        <button type="submit">Add Lead</button>
+        <button type="submit">Add User</button>
       </form>
-      <h2>Leads List</h2>
-      <ul>
-        {leads.map((lead, index) => (
-          <li key={index}>{`${lead.firstName} ${lead.lastName} - ${lead.email} - ${lead.phone}`}</li>
-        ))}
-      </ul>
     </div>
   );
 };
 
-export default Leads;
+export default Admin;

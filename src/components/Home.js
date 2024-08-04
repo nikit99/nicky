@@ -5,7 +5,7 @@ const Home = ({ leadCount }) => {
   return (
     <div>
       <h1>Home</h1>
-      <p>Total Leads: {leadCount}</p>
+      <p>Number of Leads: {leadCount}</p>
     </div>
   );
 };
